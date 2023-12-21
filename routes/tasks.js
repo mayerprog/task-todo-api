@@ -49,46 +49,32 @@ router.put("/updateTask/:id", async (req, res) => {
       { new: true }
     );
 
-    res.json(task);
+    if (task) {
+      res.json(task);
+    } else {
+      res.status(404).send("Task not found");
+    }
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
 });
 
-// //DELETE CERTAIN TASK + ITS FILES FROM FOLDER
-// router.delete("/deleteOne/:id", async (req, res) => {
-//   try {
-//     const user = await User.findOne({ _id: req.user._id });
-//     const taskID = req.params.id;
-//     // console.log("deletTaskId", taskID);
-//     user.tasks.forEach((task) => {
-//       if (task._id == taskID) {
-//         task.images.forEach((image) => {
-//           imageName = image.name;
-//           fs.unlink(`uploads/${imageName}`, (err) => {
-//             if (err) {
-//               console.error("Error deleting file:", err);
-//               return;
-//             }
-//           });
-//         });
-//       }
-//       return;
-//     });
+//DELETE CERTAIN TASK + ITS FILES FROM FOLDER
+router.delete("/deleteOne/:id", async (req, res) => {
+  try {
+    const taskID = req.params.id;
 
-//     const updatedUser = await User.findOneAndUpdate(
-//       { _id: req.user._id }, //finds user and task
-//       { $pull: { tasks: { _id: taskID } } } // deletes certain task
-//     );
+    const result = await Task.findByIdAndDelete(taskID);
 
-//     const job = await taskQueue.getJob(taskID);
-//     await job?.remove();
-
-//     res.json({ message: "Task deleted" });
-//   } catch (err) {
-//     res.status(500).json({ message: err.message });
-//   }
-// });
+    if (result) {
+      res.json({ message: "Task successfully deleted." });
+    } else {
+      res.status(404).send("Task not found");
+    }
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
 
 // router.delete("/deleteAll", async (req, res) => {
 //   try {
