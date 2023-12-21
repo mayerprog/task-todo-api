@@ -31,39 +31,29 @@ router.get("/getAll", async (req, res) => {
   }
 });
 
-// // GET ONE TASK
-// router.get("/getOne/:id", (req, res) => {
-//   const foundTask = req.user.tasks.find((t) => t._id === req.params.id);
-//   res.status(200).json(foundTask);
-// });
+// GET ONE TASK
+router.get("/getOne/:id", (req, res) => {
+  const foundTask = req.user.tasks.find((t) => t._id === req.params.id);
+  res.status(200).json(foundTask);
+});
 
-// //UPDATE ELEMENTS IN A TASK
-// router.put("/updateTask/:id", async (req, res) => {
-//   try {
-//     const updateTask = req.body.updatedTask;
-//     const imagesName = req.body.imagesName;
-//     const taskID = req.params.id;
+//UPDATE ELEMENTS IN A TASK
+router.put("/updateTask/:id", async (req, res) => {
+  try {
+    const updatedTask = req.body.updatedTask;
+    const taskID = req.params.id;
 
-//     console.log("imagesId", imagesName);
-//     const updatedUser = await User.findOneAndUpdate(
-//       { _id: req.user._id, "tasks._id": taskID }, //finds user and task
-//       { $set: { "tasks.$": updateTask } }, // put updated task
-//       { new: true }
-//     );
-//     imagesName.forEach((imageName) => {
-//       fs.unlink(`uploads/${imageName}`, (err) => {
-//         if (err) {
-//           console.error("Error deleting file:", err);
-//           return;
-//         }
-//       });
-//     });
+    const task = await Task.findOneAndUpdate(
+      { _id: taskID },
+      { $set: updatedTask },
+      { new: true }
+    );
 
-//     res.json(updatedUser);
-//   } catch (err) {
-//     res.status(400).json({ message: err.message });
-//   }
-// });
+    res.json(task);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+});
 
 // //DELETE CERTAIN TASK + ITS FILES FROM FOLDER
 // router.delete("/deleteOne/:id", async (req, res) => {
