@@ -9,6 +9,7 @@ router.post("/createTask", async (req, res) => {
   const task = new Task({
     title: req.body.title,
     description: req.body.description,
+    isDone: req.body.isDone,
   });
 
   try {
@@ -75,17 +76,3 @@ router.delete("/deleteOne/:id", async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 });
-
-// router.delete("/deleteAll", async (req, res) => {
-//   try {
-//     const updatedUser = await User.findOneAndUpdate(
-//       { _id: req.user._id },
-//       { $unset: { tasks: 1 } },
-//       { new: true }
-//     );
-
-//     res.json({ message: "Tasks deleted" });
-//   } catch (err) {
-//     res.status(500).json({ message: err.message });
-//   }
-// });

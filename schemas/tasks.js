@@ -5,6 +5,7 @@ const findOrCreate = require("mongoose-findorcreate");
 const task = new mongoose.Schema({
   title: String,
   description: String,
+  isDone: Boolean,
 });
 
 const taskSchema = mongoose.model("task", task);
