@@ -10,6 +10,7 @@ router.post("/createTask", async (req, res) => {
     title: req.body.title,
     description: req.body.description,
     isDone: req.body.isDone,
+    isImportant: req.body.isImportant,
   });
 
   try {
